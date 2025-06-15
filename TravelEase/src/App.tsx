@@ -1,13 +1,20 @@
 import './App.css'
-import HomePage from './website/homepage'
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import HomePage from './website/homepage';
+import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom'; 
 
 function App() {
 
   return (
-    <div>
-      <HomePage />
-      {/* Additional sections can be added here */}
-    </div>
+    <Router>
+      <Routes> {/* Use <Routes> only once */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/register" element = {<RegisterPage />} /> 
+        <Route path="/login" element={<LoginPage />} /> 
+      </Routes>
+    </Router>
+    
   )
 }
 

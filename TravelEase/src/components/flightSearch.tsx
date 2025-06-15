@@ -1,11 +1,7 @@
 // src/components/FlightSearch.tsx
-import React, { useState, useEffect, type ChangeEvent } from "react";
+import React, { useState, type ChangeEvent } from "react";
 import axios from "axios";
-
-interface Airport {
-  code: string;
-  name: string;
-}
+import { AirportAutocomplete } from "./AirportAutocomplete";
 
 interface FlightOffer {
   id: string;
@@ -28,54 +24,24 @@ const FlightSearch: React.FC = () => {
   };
 
   // form state
-  const [origin, setOrigin] = useState("LHR");
-  const [originOptions, setOriginOptions] = useState<Airport[]>([]);
-  const [destination, setDestination] = useState("CDG");
-  const [destOptions, setDestOptions] = useState<Airport[]>([]);
-  const [date, setDate] = useState(getInitialDate());
-  const [adults, setAdults] = useState(1);
+  const [originInput, setOriginInput]       = useState(""); // what user types / sees
+  const [origin, setOrigin]                 = useState(""); // the IATA code for API
+  const [destinationInput, setDestinationInput] = useState("");
+  const [destination, setDestination]       = useState("");
+  const [date, setDate]                     = useState(getInitialDate());
+  const [adults, setAdults]                 = useState(1);
 
   // results
-  const [flights, setFlights] = useState<FlightOffer[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // helper to fetch airport suggestions
-  useEffect(() => {
-    if (origin.length < 3) { setOriginOptions([]); return; }
-    let cancelled = false;
-    (async () => {
-      try {
-        const resp = await axios.get<{ data: Airport[] }>(
-          `${API}/api/airports`,
-          { params: { keyword: origin } }
-        );
-        if (!cancelled) setOriginOptions(resp.data.data || []);
-      } catch {
-        if (!cancelled) setOriginOptions([]);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [origin, API]);
-
-  useEffect(() => {
-    if (destination.length < 3) { setDestOptions([]); return; }
-    let cancelled = false;
-    (async () => {
-      try {
-        const resp = await axios.get<{ data: Airport[] }>(
-          `${API}/api/airports`,
-          { params: { keyword: destination } }
-        );
-        if (!cancelled) setDestOptions(resp.data.data || []);
-      } catch {
-        if (!cancelled) setDestOptions([]);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, [destination, API]);
+  const [flights, setFlights]               = useState<FlightOffer[]>([]);
+  const [loading, setLoading]               = useState(false);
+  const [error, setError]                   = useState<string | null>(null);
 
   const handleSearch = async () => {
+    if (!origin || !destination) {
+      setError("Please select both an origin and destination.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setFlights([]);
@@ -110,7 +76,15 @@ const FlightSearch: React.FC = () => {
         {/* origin */}
         <div className="flex flex-col">
           <label htmlFor="origin-input">Origin</label>
-          <input
+          <AirportAutocomplete
+            value={originInput}
+            onInputChange={setOriginInput}
+            onSelect={(code, label) => {
+              setOrigin(code);
+              setOriginInput(label);
+            }}
+          />
+          {/* <input
             id="origin-input"
             list="origin-list"
             type="text"
@@ -119,18 +93,24 @@ const FlightSearch: React.FC = () => {
             onChange={(e: ChangeEvent<HTMLInputElement>) => setOrigin(e.target.value.toUpperCase())}
             className="border p-2 rounded"
             required
-          />
+          /> */}
           <datalist id="origin-list">
-            {originOptions.map(a => (
-              <option key={a.code} value={a.code}>{a.name}</option>
-            ))}
+            {/* legacy fallback, no longer used */}
           </datalist>
         </div>
 
         {/* destination */}
         <div className="flex flex-col">
           <label htmlFor="dest-input">Destination</label>
-          <input
+          <AirportAutocomplete
+            value={destinationInput}
+            onInputChange={setDestinationInput}
+            onSelect={(code, label) => {
+              setDestination(code);
+              setDestinationInput(label);
+            }}
+          />
+          {/* <input
             id="dest-input"
             list="dest-list"
             type="text"
@@ -139,11 +119,9 @@ const FlightSearch: React.FC = () => {
             onChange={(e: ChangeEvent<HTMLInputElement>) => setDestination(e.target.value.toUpperCase())}
             className="border p-2 rounded"
             required
-          />
+          /> */}
           <datalist id="dest-list">
-            {destOptions.map(a => (
-              <option key={a.code} value={a.code}>{a.name}</option>
-            ))}
+            {/* legacy fallback, no longer used */}
           </datalist>
         </div>
 
@@ -196,8 +174,8 @@ const FlightSearch: React.FC = () => {
         {!loading && flights.length > 0 && (
           <ul className="space-y-4">
             {flights.map(f => {
-              const itin   = f.itineraries?.[0];
-              const seg    = itin?.segments?.[0];
+              const itin = f.itineraries?.[0];
+              const seg  = itin?.segments?.[0];
               if (!seg) return null;
 
               const { departure, arrival } = seg;

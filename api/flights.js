@@ -4,7 +4,7 @@ const axios = require("axios");
 const cors = require("cors");
 const { getAccessToken } = require("./utils");
 
-const router = express();
+const router = express.Router();
 router.use(cors());
 
 function getTomorrowDate() {
