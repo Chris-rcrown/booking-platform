@@ -1,5 +1,5 @@
 // src/components/AirportAutocomplete.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import  { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useDebounce } from '../hooks/useDebounce';
 
