@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node index.js",
     "build:ui": "cd TravelEase && npm install && npm run build",
-     "build": "npm run build:ui && npx cpy \"TravelEase/dist/**/*\" dist",
+    "build": "npm run build:ui && npx cpy \"TravelEase/dist/**/*\" dist",
     "postinstall": "npm run build"
   },
   "dependencies": {
@@ -14,6 +14,7 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.2",
     "cpy-cli": "^5.0.0"
   }
 }
