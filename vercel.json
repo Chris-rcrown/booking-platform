@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "TravelEase/package.json",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "TravelEase/dist" }
     }
@@ -18,7 +18,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "TravelEase/dist/index.html"
+      "dest": "dist/index.html"
     }
   ]
 }
