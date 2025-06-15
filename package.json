@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node index.js",
-    "build": "cd TravelEase && npm install && npm run build",
+    "build": "cd TravelEase && npm install && npm run build && cp -r dist ../dist",
     "postinstall": "npm run build"
   },
   "dependencies": {
