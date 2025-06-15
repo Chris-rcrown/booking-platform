@@ -1,7 +1,7 @@
 {
     "version": 2,
     "builds": [
-      { "src": "TravelEase/package.json", "use": "@vercel/static-build", "config": { "distDir": "TravelEase/dist" } },
+      { "src": "TravelEase/package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } },
       { "src": "index.js",  
         "use": "@vercel/node" }
     ],
