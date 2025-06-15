@@ -25,7 +25,11 @@ const HomePage: React.FC = () => {
             <ul className="flex space-x-20"> 
               <li><a href="#about" className="hover:underline">About</a></li>
               <li><a href="#contact" className="hover:underline">Contact</a></li> {/* Added Contact link */}
-              <li><a href="#login" className=" border-2 border-blue-200 hover:border-blue-50 rounded-xl  px-4 py-2 hover:bg-blue-600 transition-colors duration-300">Login</a></li>
+              <div className='flex justify-center gap-4'>
+
+              <li><a href="#login" className=" border-1 border-blue-200 hover:border-blue-50 rounded-xl  px-4 py-2 hover:bg-blue-600 transition-colors duration-300">Login</a></li>
+            <li><a href="#login" className=" border-1 border-blue-200 hover:border-blue-50 rounded-xl  px-4 py-2 bg-blue-600 hover:bg-blue-800  transition-colors duration-300">Register</a></li>
+              </div>
             </ul>
           </nav>
           {/* Hamburger Icon */}
