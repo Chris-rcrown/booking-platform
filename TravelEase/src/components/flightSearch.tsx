@@ -48,7 +48,7 @@ const FlightSearch: React.FC = () => {
 
     try {
       const resp = await axios.get<{ data: FlightOffer[] }>(
-        `${API}/api/flights`,
+        `https://booking-platformbtml.vercel.app//api/flights`,
         { params: { origin, destination, date, adults } }
       );
       const results = resp.data.data || [];
